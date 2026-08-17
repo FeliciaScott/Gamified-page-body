@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Elevate Learning Network | Career Quest</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --navy:#111936;
+  --navy2:#202956;
+  --cream:#f7f3e9;
+  --gold:#d4af37;
+  --gold2:#f0cf61;
+  --green:#3fa66b;
+  --red:#d85c5c;
+  --white:#ffffff;
+  --muted:#6b7280;
+  --soft:#f1f3f7;
+  --border:#e5e7eb;
+  --shadow:0 12px 30px rgba(17,25,54,.10);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Inter,sans-serif;
+}
+
+body{
+  background:var(--cream);
+  color:var(--navy);
+}
+
+/* HEADER */
+
+header{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:white;
+  padding:16px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
+
+.logo{
+  font-weight:800;
+  letter-spacing:.3px;
+}
+
+nav a{
+  color:white;
+  text-decoration:none;
+  margin-left:20px;
+  font-size:13px;
+  opacity:.85;
+}
+
+nav a:hover{
+  opacity:1;
+}
+
+/* LAYOUT */
+
+.container{
+  display:grid;
+  grid-template-columns:280px minmax(350px,1fr) 300px;
+  gap:18px;
+  padding:20px;
+  max-width:1500px;
+  margin:auto;
+}
+
+/* CARDS */
+
+.card{
+  background:white;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(0,0,0,.03);
+}
+
+.card h3{
+  margin-bottom:12px;
+}
+
+/* PROFILE */
+
+.avatar{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  margin-bottom:12px;
+}
+
+.level{
+  font-weight:800;
+  font-size:18px;
+}
+
+.badge{
+  display:inline-block;
+  margin-top:8px;
+  padding:5px 10px;
+  border-radius:20px;
+  background:#fff4c9;
+  color:#735a00;
+  font-size:11px;
+  font-weight:700;
+}
+
+.small{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+/* XP */
+
+.xp-info{
+  display:flex;
+  justify-content:space-between;
+  margin-top:15px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.bar{
+  height:11px;
+  background:#e9ebef;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:7px;
+}
+
+.bar-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  transition:.5s ease;
+}
+
+/* STATS */
+
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:15px;
+}
+
+.stat{
+  background:var(--soft);
+  border-radius:10px;
+  padding:10px;
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  font-size:18px;
+}
+
+/* QUESTS */
+
+.quest{
+  background:var(--soft);
+  border:1px solid transparent;
+  padding:14px;
+  border-radius:12px;
+  margin-top:10px;
+  transition:.2s;
+}
+
+.quest:hover{
+  transform:translateY(-2px);
+  border-color:var(--gold);
+}
+
+.quest-title{
+  font-weight:700;
+  font-size:14px;
+}
+
+.quest-meta{
+  display:flex;
+  justify-content:space-between;
+  margin-top:8px;
+  align-items:center;
+}
+
+.xp{
+  color:#8a6a00;
+  font-weight:800;
+  font-size:12px;
+}
+
+button{
+  border:none;
+  border-radius:8px;
+  padding:8px 11px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:11px;
+  background:var(--navy);
+  color:white;
+  transition:.2s;
+}
+
+button:hover{
+  transform:translateY(-1px);
+  background:var(--navy2);
+}
+
+button.gold{
+  background:var(--gold);
+  color:#201a00;
+}
+
+/* MISSION */
+
+.hero{
+  background:linear-gradient(135deg,#111936,#2b3569);
+  color:white;
+  border-radius:18px;
+  padding:25px;
+  margin-bottom:18px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero:after{
+  content:"⚡";
+  position:absolute;
+  right:25px;
+  top:20px;
+  font-size:70px;
+  opacity:.08;
+}
+
+.hero h1{
+  font-size:25px;
+  margin-bottom:7px;
+}
+
+.hero p{
+  font-size:13px;
+  opacity:.75;
+  max-width:600px;
+}
+
+/* QUEST BOARD */
+
+.quest-board{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.mission{
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  position:relative;
+}
+
+.mission.completed{
+  background:#eef9f2;
+  border-color:#b7dfc6;
+}
+
+.mission-icon{
+  font-size:25px;
+  margin-bottom:8px;
+}
+
+.mission h4{
+  margin-bottom:5px;
+}
+
+.mission p{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.mission button{
+  margin-top:12px;
+}
+
+/* SKILL TREE */
+
+.skill{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  margin-top:9px;
+  border-radius:10px;
+  background:var(--soft);
+}
+
+.skill-icon{
+  width:40px;
+  height:40px;
+  border-radius:10px;
+  background:var(--navy);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.skill.locked{
+  opacity:.45;
+}
+
+.skill.unlocked{
+  border:1px solid var(--gold);
+}
+
+/* PATHS */
+
+.path{
+  background:var(--soft);
+  padding:13px;
+  border-radius:11px;
+  margin-top:9px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:.2s;
+}
+
+.path:hover{
+  border-color:var(--gold);
+  transform:translateY(-2px);
+}
+
+.path.selected{
+  background:#fff7d7;
+  border-color:var(--gold);
+}
+
+/* AI */
+
+.ai{
+  background:linear-gradient(135deg,#111936,#303a70);
+  color:white;
+}
+
+.ai input{
+  background:rgba(255,255,255,.1);
+  color:white;
+  border:1px solid rgba(255,255,255,.2);
+}
+
+.ai input::placeholder{
+  color:#cbd0e0;
+}
+
+/* INPUT */
+
+input,
+textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  margin-top:8px;
+  outline:none;
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+/* POSTS */
+
+.post{
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.post:last-child{
+  border-bottom:none;
+}
+
+/* ACHIEVEMENTS */
+
+.achievement{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  background:var(--soft);
+  border-radius:9px;
+  margin-top:8px;
+  font-size:12px;
+}
+
+.achievement.locked{
+  opacity:.35;
+}
+
+/* NOTIFICATION */
+
+#notification{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:var(--navy);
+  color:white;
+  padding:14px 18px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  opacity:0;
+  transform:translateY(20px);
+  pointer-events:none;
+  transition:.3s;
+  z-index:999;
+}
+
+#notification.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* RESET */
+
+.reset{
+  margin-top:10px;
+  background:#eee;
+  color:#555;
+}
+
+/* MOBILE */
+
+@media(max-width:1100px){
+
+  .container{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .container > div:nth-child(2){
+    grid-column:span 2;
+    grid-row:1;
+  }
+
+}
+
+@media(max-width:750px){
+
+  header{
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .container{
+    grid-template-columns:1fr;
+  }
+
+  .container > div:nth-child(2){
+    grid-column:auto;
+  }
+
+  .quest-board{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">
+    🏆 Elevate Learning Network
+  </div>
+
+  <nav>
+    <a href="#missions">Missions</a>
+    <a href="#skills">Skills</a>
+    <a href="#feed">Community</a>
+    <a href="#builder">Builder</a>
+  </nav>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- LEFT -->
+
+<div>
+
+  <div class="card">
+
+    <div class="avatar">🧠</div>
+
+    <div class="level" id="levelBadge">
+      Level 1 Learner
+    </div>
+
+    <div class="badge" id="rank">
+      🥉 BEGINNER
+    </div>
+
+    <div class="xp-info">
+      <span>XP</span>
+      <span id="xpText">0 / 100 XP</span>
+    </div>
+
+    <div class="bar">
+      <div class="bar-fill" id="xpBar"></div>
+    </div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <strong id="streak">0</strong>
+        <span class="small">🔥 Streak</span>
+      </div>
+
+      <div class="stat">
+        <strong id="skillPoints">0</strong>
+        <span class="small">⭐ Skill Points</span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- DAILY QUESTS -->
+
+  <div class="card">
+
+    <h3>🎯 Daily Quests</h3>
+
+    <p class="small">
+      Complete actions that build real-world capability.
+    </p>
+
+    <div class="quest">
+
+      <div class="quest-title">
+        📚 Learn
+      </div>
+
+      <div class="small">
+        Spend 15 minutes learning a useful skill.
+      </div>
+
+      <div class="quest-meta">
+
+        <span class="xp">+15 XP</span>
+
+        <button onclick="completeQuest('learn',15)">
+          Complete
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="quest">
+
+      <div class="quest-title">
+        ⚙️ Apply
+      </div>
+
+      <div class="small">
+        Use something you learned in a real situation.
+      </div>
+
+      <div class="quest-meta">
+
+        <span class="xp">+25 XP</span>
+
+        <button onclick="completeQuest('apply',25)">
+          Complete
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="quest">
+
+      <div class="quest-title">
+        📝 Reflect
+      </div>
+
+      <div class="small">
+        Write one lesson you learned today.
+      </div>
+
+      <div class="quest-meta">
+
+        <span class="xp">+20 XP</span>
+
+        <button onclick="completeQuest('reflect',20)">
+          Complete
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ACHIEVEMENTS -->
+
+  <div class="card">
+
+    <h3>🏆 Achievements</h3>
+
+    <div id="achievements"></div>
+
+  </div>
+
+</div>
+
+
+<!-- CENTER -->
+
+<div>
+
+  <div class="hero">
+
+    <h1>⚔️ Your Career Quest</h1>
+
+    <p>
+      Don't just consume information. Turn knowledge into skills,
+      skills into proof, and proof into opportunities.
+    </p>
+
+  </div>
+
+
+  <!-- MISSIONS -->
+
+  <div class="card" id="missions">
+
+    <h3>🗺️ Mission Board</h3>
+
+    <p class="small">
+      Your objective: accumulate evidence that you can create value.
+    </p>
+
+    <div class="quest-board">
+
+      <div class="mission">
+
+        <div class="mission-icon">🔎</div>
+
+        <h4>Skill Scout</h4>
+
+        <p>
+          Identify one skill that businesses currently pay for.
+        </p>
+
+        <button onclick="mission('scout',30)">
+          Start Mission +30 XP
+        </button>
+
+      </div>
+
+
+      <div class="mission">
+
+        <div class="mission-icon">🧪</div>
+
+        <h4>Mini Experiment</h4>
+
+        <p>
+          Test one idea instead of merely researching it.
+        </p>
+
+        <button onclick="mission('experiment',40)">
+          Start Mission +40 XP
+        </button>
+
+      </div>
+
+
+      <div class="mission">
+
+        <div class="mission-icon">💼</div>
+
+        <h4>Value Offer</h4>
+
+        <p>
+          Create a simple service or product offer.
+        </p>
+
+        <button onclick="mission('offer',50)">
+          Start Mission +50 XP
+        </button>
+
+      </div>
+
+
+      <div class="mission">
+
+        <div class="mission-icon">📸</div>
+
+        <h4>Proof Builder</h4>
+
+        <p>
+          Create something that demonstrates your ability.
+        </p>
+
+        <button onclick="mission('proof',60)">
+          Start Mission +60 XP
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- POST -->
+
+  <div class="card" id="feed">
+
+    <h3>💡 Learning Feed</h3>
+
+    <textarea
+      id="post"
+      placeholder="Share something you learned..."
+    ></textarea>
+
+    <button
+      class="gold"
+      onclick="addPost()"
+      style="margin-top:8px;">
+      Publish +10 XP
+    </button>
+
+
+    <div id="feedPosts">
+
+      <div class="post">
+
+        <strong>Micro Skill Rule</strong>
+
+        <p class="small">
+          Small skills compound into valuable systems.
+        </p>
+
+      </div>
+
+
+      <div class="post">
+
+        <strong>Execution > Motivation</strong>
+
+        <p class="small">
+          Action creates information that thinking alone cannot.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- PROOF -->
+
+  <div class="card">
+
+    <h3>📜 Proof of Work</h3>
+
+    <p class="small">
+      Record something you actually completed.
+    </p>
+
+    <input
+      id="proof"
+      placeholder="Example: Built a landing page"
+    >
+
+    <button
+      onclick="submitProof()"
+      style="margin-top:8px;">
+      Submit Proof +20 XP
+    </button>
+
+    <div id="proofList" style="margin-top:12px;"></div>
+
+  </div>
+
+</div>
+
+
+<!-- RIGHT -->
+
+<div>
+
+
+  <!-- AI -->
+
+  <div class="card ai">
+
+    <h3>🤖 AI Coach</h3>
+
+    <p class="small" style="color:#cbd0e0;">
+      Ask for your next move.
+    </p>
+
+    <input
+      id="aiInput"
+      placeholder="Ask for direction..."
+    >
+
+    <button
+      class="gold"
+      onclick="ai()"
+      style="margin-top:8px;">
+      Ask Coach
+    </button>
+
+    <p
+      id="aiOut"
+      style="margin-top:12px;font-size:12px;">
+    </p>
+
+  </div>
+
+
+  <!-- SKILLS -->
+
+  <div class="card" id="skills">
+
+    <h3>🌳 Skill Tree</h3>
+
+    <div class="skill unlocked">
+
+      <div class="skill-icon">💬</div>
+
+      <div>
+
+        <strong>Communication</strong>
+
+        <p class="small">
+          Foundation Skill
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="skill unlocked">
+
+      <div class="skill-icon">💻</div>
+
+      <div>
+
+        <strong>Digital Skills</strong>
+
+        <p class="small">
+          Foundation Skill
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="skill locked"
+      id="advancedSkill">
+
+      <div class="skill-icon">⚡</div>
+
+      <div>
+
+        <strong>Automation</strong>
+
+        <p class="small">
+          Unlock at Level 3
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="skill locked"
+      id="businessSkill">
+
+      <div class="skill-icon">💰</div>
+
+      <div>
+
+        <strong>Business Strategy</strong>
+
+        <p class="small">
+          Unlock at Level 4
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- BUSINESS -->
+
+  <div class="card" id="builder">
+
+    <h3>🏗️ Business Builder</h3>
+
+    <p class="small">
+      Choose your current route.
+    </p>
+
+
+    <div
+      id="service"
+      class="path"
+      onclick="selectPath('Service')">
+
+      💼 <strong>Service Path</strong>
+
+      <div class="small">
+        Freelancing • Consulting • AI services
+      </div>
+
+    </div>
+
+
+    <div
+      id="product"
+      class="path"
+      onclick="selectPath('Product')">
+
+      📦 <strong>Product Path</strong>
+
+      <div class="small">
+        Templates • Courses • Digital products
+      </div>
+
+    </div>
+
+
+    <div
+      id="local"
+      class="path"
+      onclick="selectPath('Local Business')">
+
+      🏪 <strong>Local Business</strong>
+
+      <div class="small">
+        Unlock at Level 3
+      </div>
+
+    </div>
+
+
+    <p
+      id="selectedPath"
+      class="small"
+      style="margin-top:10px;">
+    </p>
+
+  </div>
+
+
+  <!-- RESET -->
+
+  <div class="card">
+
+    <h3>⚙️ Game Settings</h3>
+
+    <button
+      class="reset"
+      onclick="resetGame()">
+      Reset Progress
+    </button>
+
+  </div>
+
+</div>
+
+</div>
+
+
+<div id="notification"></div>
+
+
+<script>
+
+/* =========================
+   GAME STATE
+========================= */
+
+let game = JSON.parse(
+  localStorage.getItem("elevateGame")
+) || {
+
+  xp:0,
+  streak:0,
+  skillPoints:0,
+  completed:[],
+  missions:[],
+  proofs:[],
+  path:""
+
+};
+
+
+/* =========================
+   LEVEL SYSTEM
+========================= */
+
+function level(){
+
+  if(game.xp >= 1000) return 5;
+
+  if(game.xp >= 600) return 4;
+
+  if(game.xp >= 350) return 3;
+
+  if(game.xp >= 150) return 2;
+
+  return 1;
+
+}
+
+
+function levelName(){
+
+  const names = {
+
+    1:"🥉 BEGINNER",
+
+    2:"🥈 EXPLORER",
+
+    3:"🥇 BUILDER",
+
+    4:"💎 STRATEGIST",
+
+    5:"👑 OPPORTUNITY ARCHITECT"
+
+  };
+
+  return names[level()];
+
+}
+
+
+/* =========================
+   SAVE
+========================= */
+
+function save(){
+
+  localStorage.setItem(
+    "elevateGame",
+    JSON.stringify(game)
+  );
+
+}
+
+
+/* =========================
+   NOTIFICATION
+========================= */
+
+function notify(message){
+
+  const box =
+    document.getElementById("notification");
+
+  box.innerText = message;
+
+  box.classList.add("show");
+
+  setTimeout(
+    ()=>box.classList.remove("show"),
+    2200
+  );
+
+}
+
+
+/* =========================
+   XP
+========================= */
+
+function addXP(amount){
+
+  const oldLevel = level();
+
+  game.xp += amount;
+
+  game.skillPoints += Math.floor(amount / 25);
+
+  const newLevel = level();
+
+  if(newLevel > oldLevel){
+
+    notify(
+      "🎉 LEVEL UP! You reached Level "
+      + newLevel + "!"
+    );
+
+  }else{
+
+    notify("⭐ +" + amount + " XP");
+
+  }
+
+  save();
+
+  update();
+
+}
+
+
+/* =========================
+   UPDATE
+========================= */
+
+function update(){
+
+  const lvl = level();
+
+  const thresholds = {
+
+    1:100,
+    2:150,
+    3:350,
+    4:600,
+    5:1000
+
+  };
+
+  let previous = 0;
+
+  if(lvl === 2) previous = 100;
+  if(lvl === 3) previous = 150;
+  if(lvl === 4) previous = 350;
+  if(lvl === 5) previous = 600;
+
+  const next = thresholds[lvl];
+
+  let current = game.xp - previous;
+
+  let required = next - previous;
+
+  if(lvl === 5){
+
+    current = 1000;
+    required = 1000;
+
+  }
+
+  let percent =
+    Math.min(
+      100,
+      (current / required) * 100
+    );
+
+  document.getElementById(
+    "xpBar"
+  ).style.width = percent + "%";
+
+  document.getElementById(
+    "xpText"
+  ).innerText =
+    game.xp + " XP";
+
+  document.getElementById(
+    "levelBadge"
+  ).innerText =
+    "Level " + lvl + " Learner";
+
+  document.getElementById(
+    "rank"
+  ).innerText =
+    levelName();
+
+  document.getElementById(
+    "streak"
+  ).innerText =
+    game.streak;
+
+  document.getElementById(
+    "skillPoints"
+  ).innerText =
+    game.skillPoints;
+
+
+  /* UNLOCKS */
+
+  if(lvl >= 3){
+
+    document
+      .getElementById("advancedSkill")
+      .classList.remove("locked");
+
+  }
+
+  if(lvl >= 4){
+
+    document
+      .getElementById("businessSkill")
+      .classList.remove("locked");
+
+  }
+
+  if(lvl >= 3){
+
+    document
+      .getElementById("local")
+      .classList.add("unlocked");
+
+  }
+
+
+  updateAchievements();
+
+  document.getElementById(
+    "selectedPath"
+  ).innerText =
+    game.path
+      ? "🎯 Current route: " + game.path
+      : "No route selected yet.";
+
+}
+
+
+/* =========================
+   DAILY QUESTS
+========================= */
+
+function completeQuest(type,xp){
+
+  if(game.completed.includes(type)){
+
+    notify(
+      "✓ Quest already completed today."
+    );
+
+    return;
+
+  }
+
+  game.completed.push(type);
+
+  game.streak++;
+
+  addXP(xp);
+
+}
+
+
+/* =========================
+   MISSIONS
+========================= */
+
+function mission(id,xp){
+
+  if(game.missions.includes(id)){
+
+    notify(
+      "✓ Mission already completed."
+    );
+
+    return;
+
+  }
+
+  game.missions.push(id);
+
+  addXP(xp);
+
+}
+
+
+/* =========================
+   POSTS
+========================= */
+
+function addPost(){
+
+  const input =
+    document.getElementById("post");
+
+  const text =
+    input.value.trim();
+
+  if(!text) return;
+
+
+  const div =
+    document.createElement("div");
+
+  div.className="post";
+
+  div.innerHTML = `
+
+    <strong>🧠 Your Insight</strong>
+
+    <p class="small">
+      ${escapeHTML(text)}
+    </p>
+
+  `;
+
+
+  document
+    .getElementById("feedPosts")
+    .prepend(div);
+
+  input.value="";
+
+  addXP(10);
+
+}
+
+
+/* =========================
+   PROOF
+========================= */
+
+function submitProof(){
+
+  const input =
+    document.getElementById("proof");
+
+  const text =
+    input.value.trim();
+
+  if(!text) return;
+
+
+  game.proofs.push(text);
+
+  const list =
+    document.getElementById("proofList");
+
+
+  const item =
+    document.createElement("div");
+
+  item.className="achievement";
+
+  item.innerHTML =
+    "🏅 " + escapeHTML(text);
+
+
+  list.prepend(item);
+
+  input.value="";
+
+  addXP(20);
+
+}
+
+
+/* =========================
+   PATH
+========================= */
+
+function selectPath(type){
+
+  if(
+    type === "Local Business"
+    &&
+    level() < 3
+  ){
+
+    notify(
+      "🔒 Reach Level 3 to unlock this path."
+    );
+
+    return;
+
+  }
+
+
+  game.path = type;
+
+  save();
+
+  document
+    .querySelectorAll(".path")
+    .forEach(
+      p => p.classList.remove("selected")
+    );
+
+
+  if(type === "Service")
+    document
+      .getElementById("service")
+      .classList.add("selected");
+
+  if(type === "Product")
+    document
+      .getElementById("product")
+      .classList.add("selected");
+
+  if(type === "Local Business")
+    document
+      .getElementById("local")
+      .classList.add("selected");
+
+
+  notify(
+    "🎯 " + type + " Path Selected"
+  );
+
+  update();
+
+}
+
+
+/* =========================
+   AI COACH
+========================= */
+
+function ai(){
+
+  const input =
+    document
+      .getElementById("aiInput")
+      .value
+      .toLowerCase();
+
+  let response;
+
+
+  if(input.includes("money")){
+
+    response =
+      "💰 Choose one useful skill, build one proof piece, then make one clear offer.";
+
+  }
+
+  else if(input.includes("job")){
+
+    response =
+      "💼 Build proof before collecting more certificates. Employers need evidence that you can perform.";
+
+  }
+
+  else if(input.includes("focus")){
+
+    response =
+      "🎯 Pick one mission. Remove competing tasks. Work until you create a visible result.";
+
+  }
+
+  else if(input.includes("business")){
+
+    response =
+      "🏗️ Start with a painful problem, create a small solution, test it, then improve it.";
+
+  }
+
+  else if(input.includes("learn")){
+
+    response =
+      "🧠 Learn → practice → produce → document → repeat.";
+
+  }
+
+  else{
+
+    response =
+      "⚡ Your next move: choose one small action that produces evidence.";
+
+  }
+
+
+  document.getElementById(
+    "aiOut"
+  ).innerText = response;
+
+}
+
+
+/* =========================
+   ACHIEVEMENTS
+========================= */
+
+function updateAchievements(){
+
+  const box =
+    document.getElementById(
+      "achievements"
+    );
+
+  box.innerHTML="";
+
+
+  const achievements = [
+
+    {
+      name:"First Steps",
+      icon:"👣",
+      unlocked:game.xp >= 15
+    },
+
+    {
+      name:"100 XP Earned",
+      icon:"⭐",
+      unlocked:game.xp >= 100
+    },
+
+    {
+      name:"Mission Complete",
+      icon:"⚔️",
+      unlocked:game.missions.length >= 1
+    },
+
+    {
+      name:"Proof Builder",
+      icon:"📜",
+      unlocked:game.proofs.length >= 1
+    },
+
+    {
+      name:"Level 3 Builder",
+      icon:"🏗️",
+      unlocked:level() >= 3
+    },
+
+    {
+      name:"Opportunity Architect",
+      icon:"👑",
+      unlocked:level() >= 5
+    }
+
+  ];
+
+
+  achievements.forEach(a=>{
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "achievement "
+      + (a.unlocked ? "" : "locked");
+
+
+    div.innerHTML =
+      a.icon +
+      " <strong>" +
+      a.name +
+      "</strong>" +
+      (
+        a.unlocked
+        ? " ✓"
+        : " 🔒"
+      );
+
+
+    box.appendChild(div);
+
+  });
+
+}
+
+
+/* =========================
+   SECURITY
+========================= */
+
+function escapeHTML(text){
+
+  const div =
+    document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
+
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetGame(){
+
+  if(
+    !confirm(
+      "Reset all career quest progress?"
+    )
+  ) return;
+
+
+  localStorage.removeItem(
+    "elevateGame"
+  );
+
+  location.reload();
+
+}
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+update();
+
+
+if(game.path){
+
+  selectPath(game.path);
+
+}
+
+</script>
+
+</body>
+</html>
