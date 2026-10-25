@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PathKeeper | Build Your Own Path</title>
+<style>
+:root {
+  --bg:#F7F5EC;
+  --surface:#FFFFFF;
+  --ink:#20352B;
+  --muted:#65746A;
+  --primary:#0F2C23;
+  --accent:#A0B59A;
+  --highlight:#B78B65;
+  --line:#DDE4D9;
+  --soft:#EAF0E7;
+  --shadow:0 10px 32px rgba(20,40,28,.07);
+}
+* {box-sizing:border-box}
+html {scroll-behavior:smooth;scroll-padding-top:90px}
+body {
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;line-height:1.65;
+  transition:background .2s,color .2s;
+}
+a {color:inherit}
+button,a { -webkit-tap-highlight-color:transparent }
+button {font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible {
+  outline:3px solid var(--highlight);outline-offset:4px;
+}
+.container {width:min(1160px,92%);margin:auto}
+.topbar {
+  position:sticky;top:0;z-index:20;background:var(--surface);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner {
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;padding:14px 0;flex-wrap:wrap;
+}
+.brand {font-size:1.5rem;font-weight:800;letter-spacing:-1px;
+  text-decoration:none;color:var(--primary)}
+.brand span {color:var(--highlight)}
+.nav {display:flex;gap:7px;flex-wrap:wrap}
+.nav a {
+  padding:8px 11px;text-decoration:none;border-radius:8px;
+  font-size:.86rem;font-weight:700;
+}
+.nav a:hover {background:var(--soft);color:var(--primary)}
+.theme-panel {
+  padding:12px 0;background:var(--soft);border-bottom:1px solid var(--line);
+}
+.theme-inner {display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.theme-label {font-size:.82rem;font-weight:800}
+.theme-btn {
+  display:flex;align-items:center;gap:7px;background:var(--surface);
+  color:var(--ink);border:1px solid var(--line);border-radius:30px;
+  padding:7px 12px;font-size:.8rem;font-weight:700;
+}
+.theme-btn[aria-pressed="true"] {
+  border:2px solid var(--primary);padding:6px 11px;
+}
+.swatches {display:flex;gap:3px}
+.swatches i {width:12px;height:12px;border-radius:50%;display:block}
+.hero {
+  padding:76px 0 66px;
+  background:linear-gradient(125deg,var(--primary),var(--ink));
+  color:#fff;
+}
+.eyebrow {
+  display:inline-block;text-transform:uppercase;letter-spacing:2px;
+  font-size:.75rem;font-weight:800;color:var(--highlight);
+}
+.hero .eyebrow {color:var(--accent)}
+.hero h1 {
+  font-size:clamp(2.5rem,6vw,5rem);line-height:1.05;
+  letter-spacing:-2.5px;max-width:800px;margin:18px 0;
+}
+.hero p {font-size:1.08rem;color:#E0E8E1;max-width:650px}
+.actions {display:flex;gap:11px;flex-wrap:wrap;margin-top:27px}
+.btn {
+  display:inline-flex;justify-content:center;align-items:center;gap:8px;
+  padding:12px 17px;border-radius:9px;text-decoration:none;
+  border:1px solid transparent;font-weight:800;font-size:.91rem;
+}
+.btn-primary {background:var(--primary);color:white}
+.btn-light {background:var(--bg);color:var(--primary)}
+.btn-outline {border-color:var(--line);background:transparent;color:var(--ink)}
+.hero .btn-primary {background:var(--accent);color:var(--primary)}
+.hero .btn-outline {border-color:#71877A;color:#fff}
+.btn:hover {filter:brightness(.94);transform:translateY(-1px)}
+main section {padding:65px 0}
+.section-head {max-width:720px;margin-bottom:30px}
+.section-head h2 {font-size:clamp(1.8rem,4vw,2.6rem);
+  line-height:1.18;letter-spacing:-1px;margin:9px 0}
+.section-head p,.muted {color:var(--muted)}
+.grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.card {
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:15px;padding:23px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;align-items:flex-start;
+}
+.card h3 {margin:10px 0 5px;font-size:1.15rem}
+.card p {font-size:.93rem;color:var(--muted);margin:5px 0 17px}
+.card .btn {margin-top:auto}
+.card .btn + .btn {margin-top:9px}
+.number {
+  display:flex;align-items:center;justify-content:center;
+  width:39px;height:39px;border-radius:11px;
+  background:var(--soft);color:var(--primary);font-weight:900;
+}
+.tag {
+  display:inline-block;background:var(--soft);color:var(--primary);
+  border-radius:30px;padding:5px 10px;font-size:.73rem;font-weight:800;
+}
+.feature {background:var(--soft)}
+.split {display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
+.panel {
+  background:var(--surface);padding:25px;border:1px solid var(--line);
+  border-radius:15px;
+}
+.panel h3 {margin-top:0}
+.clean-list {padding-left:20px}
+.clean-list li {padding:5px 0}
+.steps {counter-reset:step}
+.step {position:relative;padding:0 0 22px 48px}
+.step:before {
+  counter-increment:step;content:counter(step);
+  position:absolute;left:0;top:0;background:var(--primary);color:white;
+  width:32px;height:32px;display:grid;place-items:center;border-radius:50%;
+  font-weight:800;
+}
+.content-section {border-top:1px solid var(--line)}
+.content-section:nth-of-type(even) {background:var(--surface)}
+.section-title {display:flex;gap:14px;align-items:center;margin-bottom:13px}
+.section-title .number {flex-shrink:0}
+.section-title h2 {margin:0;font-size:clamp(1.7rem,3vw,2.35rem)}
+.pill-row {display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.pill-row a {
+  text-decoration:none;padding:8px 12px;border:1px solid var(--line);
+  border-radius:30px;background:var(--surface);font-size:.84rem;font-weight:700;
+}
+.pill-row a:hover {border-color:var(--highlight)}
+.question-grid {display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.question {
+  padding:16px;border-radius:12px;background:var(--surface);
+  border:1px solid var(--line);
+}
+.question strong {display:block;margin-bottom:5px}
+.question p {font-size:.83rem;color:var(--muted);margin:0}
+footer {background:var(--primary);color:white;padding:36px 0}
+footer p {color:#D4E0D7;font-size:.9rem}
+footer a {color:white}
+.small {font-size:.8rem;color:var(--muted)}
+#notice {
+  background:var(--soft);padding:14px 17px;border-radius:10px;
+  margin-top:18px;font-size:.9rem;display:none;
+}
+@media(max-width:850px) {
+  .grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .question-grid {grid-template-columns:repeat(2,1fr)}
+  .topbar-inner {align-items:flex-start}
+}
+@media(max-width:580px) {
+  .grid,.split {grid-template-columns:1fr}
+  .nav {width:100%}
+  .nav a {font-size:.8rem;padding:6px 8px}
+  .hero {padding:52px 0}
+  .hero h1 {letter-spacing:-1.5px}
+  main section {padding:45px 0}
+  .question-grid {grid-template-columns:1fr}
+  .theme-btn {font-size:.76rem}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="#home">Path<span>Keeper</span></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#intelligence">Intelligence</a>
+      <a href="#opportunities">Opportunities</a>
+      <a href="#mobility">Mobility</a>
+      <a href="#career">Career Planning</a>
+      <a href="#execution">Progress</a>
+      <a href="#resources">Resources</a>
+      <a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<div class="theme-panel">
+  <div class="container theme-inner">
+    <span class="theme-label">COLOR STUDIO</span>
+    <span class="small">Preview the same site in four palettes:</span>
+
+    <button class="theme-btn" data-theme="forest" aria-pressed="true">
+      <span class="swatches">
+        <i style="background:#0F2C23"></i>
+        <i style="background:#F7F5EC"></i>
+        <i style="background:#A0B59A"></i>
+      </span> A. Forest &amp; Cream
+    </button>
+
+    <button class="theme-btn" data-theme="earth" aria-pressed="false">
+      <span class="swatches">
+        <i style="background:#193D2D"></i>
+        <i style="background:#F5EFE3"></i>
+        <i style="background:#785440"></i>
+      </span> B. Forest &amp; Earth
+    </button>
+
+    <button class="theme-btn" data-theme="blue" aria-pressed="false">
+      <span class="swatches">
+        <i style="background:#172B4D"></i>
+        <i style="background:#F4F7FB"></i>
+        <i style="background:#A0C4DF"></i>
+      </span> C. Navy &amp; Sky
+    </button>
+
+    <button class="theme-btn" data-theme="coral" aria-pressed="false">
+      <span class="swatches">
+        <i style="background:#242B31"></i>
+        <i style="background:#FAF7F2"></i>
+        <i style="background:#D97862"></i>
+      </span> D. Charcoal &amp; Coral
+    </button>
+  </div>
+</div>
+
+<section class="hero" id="home">
+  <div class="container">
+    <span class="eyebrow">Your future is something you can build</span>
+    <h1>Build a path.<br>Make it work for you.</h1>
+    <p>
+      PathKeeper helps you discover opportunities, investigate your options,
+      build a practical career plan, and create evidence of what you can do.
+      Turn ambition into informed decisions and consistent action.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#about">Our Core Mission →</a>
+      <a class="btn btn-outline" href="#resources">Free Library →</a>
+      <a class="btn btn-outline" href="#opportunities">Explore Opportunities →</a>
+      <a class="btn btn-outline" href="#career">Build a Career Plan →</a>
+    </div>
+  </div>
+</section>
+
+<main>
+<section id="overview">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">The PathKeeper system</span>
+      <h2>Eight connected parts. One practical direction.</h2>
+      <p>Start wherever you are. Research a decision, discover an option,
+      build a plan, or improve your follow-through.</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <span class="number">01</span>
+        <h3>Intelligence Center</h3>
+        <p>Investigate facts, compare options, and make decisions using evidence.</p>
+        <a class="btn btn-primary" href="#intelligence">Research &amp; Decide →</a>
+      </article>
+      <article class="card">
+        <span class="number">02</span>
+        <h3>Opportunity Atlas</h3>
+        <p>Find scholarships, funding, internships, education, and other pathways.</p>
+        <a class="btn btn-primary" href="#opportunities">Discover Options →</a>
+      </article>
+      <article class="card">
+        <span class="number">03</span>
+        <h3>Mobility &amp; Location</h3>
+        <p>Understand local access, cost differences, transport, and location trade-offs.</p>
+        <a class="btn btn-primary" href="#mobility">Compare Locations →</a>
+      </article>
+      <article class="card">
+        <span class="number">04</span>
+        <h3>Career Planning</h3>
+        <p>Translate a career goal into skills, milestones, weekly tasks, and alternatives.</p>
+        <a class="btn btn-primary" href="#career">Build My Plan →</a>
+      </article>
+      <article class="card">
+        <span class="number">05</span>
+        <h3>Execution &amp; Progress</h3>
+        <p>Manage next actions, deadlines, applications, blockers, and results.</p>
+        <a class="btn btn-primary" href="#execution">Track Progress →</a>
+      </article>
+      <article class="card">
+        <span class="number">06</span>
+        <h3>Resource Vault</h3>
+        <p>Organize reusable guides, templates, checklists, and trusted information.</p>
+        <a class="btn btn-primary" href="#resources">Open Free Library →</a>
+      </article>
+      <article class="card">
+        <span class="number">07</span>
+        <h3>About &amp; How to Use</h3>
+        <p>Understand the mission and choose the right starting point.</p>
+        <a class="btn btn-primary" href="#about">Start Here →</a>
+      </article>
+      <article class="card">
+        <span class="number">08</span>
+        <h3>Proof of Ability</h3>
+        <p>Document projects and completed work so your progress is verifiable.</p>
+        <a class="btn btn-primary" href="#workproof">Create Evidence →</a>
+      </article>
+      <article class="card">
+        <span class="number">+</span>
+        <h3>Resource Intelligence</h3>
+        <p>Assess credibility, relevance, costs, restrictions, and the quality of a resource.</p>
+        <a class="btn btn-primary" href="#resources">Evaluate Resources →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="feature" id="path">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">A repeatable method</span>
+      <h2>From uncertainty to evidence</h2>
+      <p>A simple operating cycle helps you avoid collecting information without
+      making progress.</p>
+    </div>
+    <div class="split">
+      <div>
+        <div class="step">
+          <h3>Discover</h3>
+          Identify the outcome you want and the opportunities available.
+        </div>
+        <div class="step">
+          <h3>Investigate</h3>
+          Check requirements, costs, credibility, deadlines, and trade-offs.
+        </div>
+        <div class="step">
+          <h3>Plan</h3>
+          Select a route and break it into achievable actions.
+        </div>
+        <div class="step">
+          <h3>Execute</h3>
+          Complete work, manage blockers, and review progress.
+        </div>
+        <div class="step">
+          <h3>Prove and adapt</h3>
+          Save evidence, assess results, and adjust the next cycle.
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Your next decision</h3>
+        <p class="muted">Choose the problem you need to solve first.</p>
+        <div class="pill-row">
+          <a href="#opportunities">I need opportunities</a>
+          <a href="#intelligence">I need better information</a>
+          <a href="#mobility">I need a location comparison</a>
+          <a href="#career">I need a plan</a>
+          <a href="#execution">I need to follow through</a>
+        </div>
+        <p class="small">These links take you directly to the corresponding
+        section of this prototype.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" id="intelligence">
+  <div class="container">
+    <div class="section-title">
+      <span class="number">01</span><h2>Intelligence Center</h2>
+    </div>
+    <p class="muted">Research before committing time, money, or effort.</p>
+    <div class="grid">
+      <article class="card">
+        <span class="tag">Compare</span>
+        <h3>Compare Options</h3>
+        <p>Evaluate cost, requirements, time, expected value, risk, and alternatives.</p>
+        <a class="btn btn-primary" href="#career">Use a Decision Framework →</a>
+      </article>
+      <article class="card">
+        <span class="tag">Analyze</span>
+        <h3>Location Power Differential Mapping</h3>
+        <p>Compare how location changes access to work, learning, funding, and services.</p>
+        <a class="btn btn-primary" href="#mobility">Analyze a Location →</a>
+      </article>
+      <article class="card">
+        <span class="tag">Verify</span>
+        <h3>Resource Intelligence Center</h3>
+        <p>Review source quality, evidence, eligibility, fees, and practical usefulness.</p>
+        <a class="btn btn-primary" href="#resources">Evaluate a Resource →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" id="opportunities">
+  <div class="container">
+    <div class="section-title">
+      <span class="number">02</span><h2>Opportunity Atlas</h2>
+    </div>
+    <p class="muted">Explore different routes to education, experience, funding,
+    and career advancement.</p>
+    <div class="grid">
+      <article class="card"><h3>Scholarship</h3>
+        <p>Eligibility, award amounts, required documents, deadlines, and renewal rules.</p>
+        <a class="btn btn-primary" href="#career">Browse Scholarships →</a></article>
+      <article class="card"><h3>Funding</h3>
+        <p>Grants, startup support, project funding, and application restrictions.</p>
+        <a class="btn btn-primary" href="#career">Find Funding →</a></article>
+      <article class="card"><h3>Internship</h3>
+        <p>Experience, skills, application requirements, and work arrangements.</p>
+        <a class="btn btn-primary" href="#career">Find Internships →</a></article>
+      <article class="card"><h3>Fellowship</h3>
+        <p>Structured development, specialist opportunities, and selection criteria.</p>
+        <a class="btn btn-primary" href="#career">Explore Fellowships →</a></article>
+      <article class="card"><h3>Education</h3>
+        <p>Courses, certificates, study programs, and ways to demonstrate learning.</p>
+        <a class="btn btn-primary" href="#education">Explore Education →</a></article>
+      <article class="card"><h3>Residency &amp; Accelerator</h3>
+        <p>Programs offering concentrated development, networks, or project support.</p>
+        <a class="btn btn-primary" href="#career">Explore Programs →</a></article>
+      <article class="card"><h3>Startup</h3>
+        <p>Validate a business idea, investigate support, and test demand before investing.</p>
+        <a class="btn btn-primary" href="#career">Plan a Startup →</a></article>
+      <article class="card"><h3>Mentorship</h3>
+        <p>Find guidance, prepare questions, and establish useful learning goals.</p>
+        <a class="btn btn-primary" href="#resources">Find Learning Resources →</a></article>
+      <article class="card"><h3>Volunteering &amp; Mobility</h3>
+        <p>Investigate experience-building, travel, and international learning options.</p>
+        <a class="btn btn-primary" href="#mobility">Explore Possibilities →</a></article>
+    </div>
+    <div class="actions">
+      <a class="btn btn-primary" href="#career">Build My Career Plan →</a>
+      <a class="btn btn-outline" href="#resources">Prepare My Application →</a>
+    </div>
+  </div>
+</section>
+
+<section class="feature" id="education">
+  <div class="container">
+    <div class="section-title">
+      <span class="number">ED</span><h2>Education: Certificates &amp; Study Abroad</h2>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <h3>Explore Certificates</h3>
+        <p>Check recognition, prerequisites, total cost, employer relevance, and assessment methods.</p>
+        <a class="btn btn-primary" href="#intelligence">Compare Certificate Value →</a>
+      </article>
+      <article class="card">
+        <h3>Explore Study Abroad</h3>
+        <p>Investigate program fees, visas, living expenses, funding, and language requirements.</p>
+        <a class="btn btn-primary" href="#mobility">Compare Study Locations →</a>
+      </article>
+      <article class="card">
+        <h3>Competitions</h3>
+        <p>Use challenges and contests to practice skills and create demonstrable work.</p>
+        <a class="btn btn-primary" href="#workproof">Document Your Results →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" id="mobility">
+  <div class="container">
+    <div class="section-title">
+      <span class="number">03</span><h2>Mobility &amp; Location</h2>
+    </div>
+    <p class="muted">A location is more than a map. It changes costs, access,
+    transportation, time, and available choices.</p>
+    <div class="split">
+      <div class="panel">
+        <h3>Location comparison checklist</h3>
+        <ul class="clean-list">
+          <li>Employment and education options</li>
+          <li>Housing and daily living expenses</li>
+          <li>Transportation and travel time</li>
+          <li>Internet access and essential services</li>
+          <li>Local funding and program eligibility</li>
+          <li>Safety, accessibility, and support networks</li>
+          <li>Relocation costs and fallback options</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Search by category and location</h3>
+        <p>Choose a category and location to prepare a search. This demo
+        generates a search link; it does not maintain a live opportunity database.</p>
+        <form id="opportunity-search">
+          <label for="category">Opportunity category</label>
+          <select id="category" required style="width:100%;padding:12px;margin:6px 0 15px">
+            <option value="scholarships">Scholarships</option>
+            <option value="grants and funding">Grants and funding</option>
+            <option value="internships">Internships</option>
+            <option value="fellowships">Fellowships</option>
+            <option value="certificates and education">Certificates and education</option>
+            <option value="volunteering">Volunteering</option>
+            <option value="competitions">Competitions</option>
+            <option value="study abroad programs">Study abroad programs</option>
+          </select>
+          <label for="location">City, state, country, or region</label>
+          <input id="location" required placeholder="e.g. Austin, Texas"
+            style="width:100%;padding:12px;margin:6px 0 15px">
+          <button class="btn btn-primary" type="submit">Search Opportunities →</button>
+        </form>
+        <div id="notice" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" id="career">
+  <div class="container">
+    <div class="section-title">
+      <span class="number">04</span><h2>Career Planning</h2>
+    </div>
+    <p class="muted">Convert an ambition into a sequence of realistic actions.</p>
+    <div class="grid">
+      <article class="card"><h3>Define the outcome</h3>
+        <p>Specify the role, skill, business, or achievement you are working toward.</p></article>
+      <article class="card"><h3>Identify the gap</h3>
+        <p>Compare current evidence and abilities with the target requirements.</p></article>
+      <article class="card"><h3>Build the action plan</h3>
+        <p>Set weekly actions, deadlines, milestones, and a minimum viable fallback.</p></article>
+    </div>
+    <div class="panel" style="margin-top:20px">
+      <h3>Draft your first career action plan</h3>
+      <form id="plan-form">
+        <label for="goal">Career or learning goal</label>
+        <input id="goal" required placeholder="What do you want to accomplish?"
+          style="display:block;width:100%;padding:12px;margin:7px 0 15px">
+        <label for="skill">Most important skill or gap</label>
+        <input id="skill" required placeholder="What do you need to learn or prove?"
+          style="display:block;width:100%;padding:12px;margin:7px 0 15px">
+        <label for="action">First action you can take this week</label>
+        <input id="action" required placeholder="Make it specific and achievable"
+          style="display:block;width:100%;padding:12px;margin:7px 0 15px">
+        <label for="deadline">Target date</label>
+        <input id="deadline" type="date" required
+          style="display:block;padding:12px;margin:7px 0 15px">
+        <button class="btn btn-primary" type="submit">Create My Plan →</button>
+      </form>
+      <div id="plan-output" aria-live="polite"></div>
+      <p class="small">Prototype limitation: the plan appears on this page but is
+      not saved to an account or database. Copy it somewhere safe.</p>
+    </div>
+    <div class="actions">
+      <a class="btn btn-primary" href="#opportunities">Find Opportunities →</a>
+      <a class="btn btn-outline" href="#execution">Track Progress →</a>
+    </div>
+  </div>
+</section>
+
+<section class="feature" id="execution">
+  <div class="container">
+    <div class="section-title">
+      <span class="number">05</span><h2>Execution &amp; Progress</h2>
+    </div>
+    <p class="muted">A plan becomes valuable when work is completed, reviewed,
+    and supported by evidence.</p>
+    <div class="split">
+      <div class="panel">
+        <h3>Execution checklist</h3>
+        <div id="task-list">
+          <label style="display:block;padding:9px 0">
+            <input type="checkbox"> Identify today's most important action
+          </label>
+          <label style="display:block;padding:9px 0">
+            <input type="checkbox"> Check deadlines and application requirements
+          </label>
+          <label style="display:block;padding:9px 0">
+            <input type="checkbox"> Complete one defined piece of work
+          </label>
+          <label style="display:block;padding:9px 0">
+            <input type="checkbox"> Save evidence of the result
+          </label>
+          <label style="display:block;padding:9px 0">
+            <input type="checkbox"> Review blockers and choose the next step
+          </label>
+        </div>
+        <p id="task-count" class="small" aria-live="polite">0 of 5 actions complete</p>
+      </div>
+      <div class="panel">
+        <h3>Record a result</h3>
+        <p>Document the task, outcome, and evidence location.</p>
+        <a class="btn btn-primary" href="#workproof">Record Evidence →</a>
+        <a class="btn btn-outline" href="#opportunities">Find Opportunities →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" id="workproof">
+  <div class="container">
+    <div class="section-title">
+      <span class="number">06</span><h2>WorkProof &amp; Portfolio</h2>
+    </div>
+    <p class="muted">Turn completed work into evidence someone else can understand.</p>
+    <div class="grid">
+      <article class="card">
+        <h3>Evidence Block</h3>
+        <p>Capture the problem, your contribution, the process, the result, and supporting proof.</p>
+        <a class="btn btn-primary" href="#evidence-form">Open Evidence Block →</a>
+      </article>
+      <article class="card">
+        <h3>Portfolio Operator / PortfolioOS</h3>
+        <p>Organize projects and evidence into a clear presentation of your capabilities.</p>
+        <a class="btn btn-primary" href="#evidence-form">Build a Portfolio →</a>
+      </article>
+      <article class="card">
+        <h3>Career Intelligence Lab</h3>
+        <p>Connect skill requirements to projects that demonstrate relevant abilities.</p>
+        <a class="btn btn-primary" href="#career">Choose a Proof Project →</a>
+      </article>
+    </div>
+    <div class="panel" id="evidence-form" style="margin-top:20px">
+      <h3>Evidence Block template</h3>
+      <form id="evidence">
+        <label for="e-title">Project or task</label>
+        <input id="e-title" required placeholder="Name the work"
+          style="display:block;width:100%;padding:12px;margin:7px 0 14px">
+        <label for="e-problem">Problem or objective</label>
+        <textarea id="e-problem" required placeholder="What needed to be solved?"
+          style="display:block;width:100%;padding:12px;margin:7px 0 14px"></textarea>
+        <label for="e-work">What you did</label>
+        <textarea id="e-work" required placeholder="Describe your contribution"
+          style="display:block;width:100%;padding:12px;margin:7px 0 14px"></textarea>
+        <label for="e-result">Result and evidence location</label>
+        <textarea id="e-result" required placeholder="What changed? Where can the work be verified?"
+          style="display:block;width:100%;padding:12px;margin:7px 0 14px"></textarea>
+        <button class="btn btn-primary" type="submit">Prepare Evidence Record →</button>
+      </form>
+      <div id="evidence-output" aria-live="polite"></div>
+      <p class="small">Copy the generated record into your own document or portfolio.
+      This prototype does not upload files or persist records.</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" id="resources">
+  <div class="container">
+    <div class="section-title">
+      <span class="number">07</span><h2>Resource Vault</h2>
+    </div>
+    <p class="muted">A useful library is organized around what visitors need to do,
+    not simply a long list of links.</p>
+    <div class="grid">
+      <article class="card"><h3>Planning Templates</h3>
+        <p>Goal-setting sheets, weekly plans, milestone trackers, and fallback plans.</p>
+        <a class="btn btn-primary" href="#career">Use Career Planning →</a></article>
+      <article class="card"><h3>Research &amp; Evaluation</h3>
+        <p>Source checks, comparison tables, eligibility reviews, and decision criteria.</p>
+        <a class="btn btn-primary" href="#intelligence">Evaluate a Resource →</a></article>
+      <article class="card"><h3>Application Preparation</h3>
+        <p>Document checklists, application timelines, project examples, and review steps.</p>
+        <a class="btn btn-primary" href="#opportunities">Explore Opportunities →</a></article>
+    </div>
+    <div class="panel" style="margin-top:20px">
+      <h3>Evaluate a resource before relying on it</h3>
+      <ul class="clean-list">
+        <li>Who published it, and what qualifies them to provide it?</li>
+        <li>When was it last updated? Are the facts independently verifiable?</li>
+        <li>Are costs, eligibility rules, restrictions, and risks disclosed?</li>
+        <li>Does it solve the specific problem you are facing?</li>
+        <li>What action will you take after reviewing it?</li>
+      </ul>
+      <a class="btn btn-primary" href="#intelligence">Open Resource Intelligence Center →</a>
+    </div>
+  </div>
+</section>
+
+<section class="feature" id="about">
+  <div class="container">
+    <div class="section-title">
+      <span class="number">08</span><h2>About &amp; How to Use PathKeeper</h2>
+    </div>
+    <div class="split">
+      <div>
+        <span class="eyebrow">Our core mission</span>
+        <h3 style="font-size:1.7rem">Help people create their own path forward.</h3>
+        <p>PathKeeper is designed to help learners and aspiring professionals
+        structure their time, investigate possibilities, build useful skills,
+        and demonstrate what they can accomplish.</p>
+        <p>The aim is to connect information with decisions, decisions with
+        plans, and plans with observable results.</p>
+      </div>
+      <div class="panel">
+        <h3>Where should you start?</h3>
+        <p><strong>New to the site?</strong> Explore the mission, then choose an objective.</p>
+        <p><strong>Unsure of your options?</strong> Start with the Opportunity Atlas.</p>
+        <p><strong>Facing a difficult choice?</strong> Visit the Intelligence Center.</p>
+        <p><strong>Ready to work?</strong> Build a plan and track execution.</p>
+        <p><strong>Need to show your abilities?</strong> Create a WorkProof record.</p>
+        <a class="btn btn-primary" href="#home">Start at Home ↑</a>
+        <a class="btn btn-outline" href="#overview">Browse All Sections →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="standard">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Site-wide quality standard</span>
+      <h2>Every page answers five questions</h2>
+      <p>Use this standard when creating or updating any PathKeeper page.</p>
+    </div>
+    <div class="question-grid">
+      <div class="question"><strong>1. Purpose</strong><p>What problem does this page help solve?</p></div>
+      <div class="question"><strong>2. Information</strong><p>Which facts, requirements, examples, and constraints matter?</p></div>
+      <div class="question"><strong>3. Resources</strong><p>Where can visitors verify information or take action?</p></div>
+      <div class="question"><strong>4. Decision</strong><p>What should visitors compare, choose, or prepare?</p></div>
+      <div class="question"><strong>5. Next step</strong><p>Which related page or action should they visit next?</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <a class="brand" href="#home" style="color:white">Path<span>Keeper</span></a>
+    <p>Discover with purpose. Plan with evidence. Move forward with intention.</p>
+    <div class="pill-row">
+      <a href="#intelligence">Research</a>
+      <a href="#opportunities">Discover</a>
+      <a href="#career">Plan</a>
+      <a href="#execution">Execute</a>
+      <a href="#workproof">Prove</a>
+      <a href="#resources">Learn</a>
+    </div>
+    <p class="small" style="color:#D4E0D7">
+      PathKeeper website concept · Prototype for design and navigation testing
+    </p>
+  </div>
+</footer>
+
+<script>
+const themes = {
+  forest: {
+    bg:"#F7F5EC", surface:"#FFFFFF", ink:"#20352B",
+    muted:"#65746A", primary:"#0F2C23", accent:"#A0B59A",
+    highlight:"#B78B65", line:"#DDE4D9", soft:"#EAF0E7"
+  },
+  earth: {
+    bg:"#F5EFE3", surface:"#FFFCF6", ink:"#30291F",
+    muted:"#76695B", primary:"#193D2D", accent:"#D5B58A",
+    highlight:"#785440", line:"#E1D4C2", soft:"#EAE2D4"
+  },
+  blue: {
+    bg:"#F4F7FB", surface:"#FFFFFF", ink:"#24344A",
+    muted:"#65748A", primary:"#172B4D", accent:"#A0C4DF",
+    highlight:"#D49A3A", line:"#DCE5F0", soft:"#E6EFF8"
+  },
+  coral: {
+    bg:"#FAF7F2", surface:"#FFFFFF", ink:"#242B31",
+    muted:"#6C7378", primary:"#242B31", accent:"#A8B7B0",
+    highlight:"#D97862", line:"#E5DFD8", soft:"#F1EAE4"
+  }
+};
+
+document.querySelectorAll(".theme-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    const theme = themes[button.dataset.theme];
+    if (!theme) return;
+    Object.entries(theme).forEach(([key, value]) => {
+      document.documentElement.style.setProperty("--" + key, value);
+    });
+    document.querySelectorAll(".theme-btn").forEach(item => {
+      item.setAttribute("aria-pressed", String(item === button));
+    });
+  });
+});
+
+document.getElementById("opportunity-search").addEventListener("submit", event => {
+  event.preventDefault();
+  const category = document.getElementById("category").value;
+  const location = document.getElementById("location").value.trim();
+  if (!location) return;
+  const query = category + " in " + location;
+  const link = "https://www.google.com/search?q=" + encodeURIComponent(query);
+  const notice = document.getElementById("notice");
+  notice.replaceChildren();
+  const text = document.createElement("p");
+  text.textContent = 'Your search is ready: "' + query + '".';
+  const anchor = document.createElement("a");
+  anchor.href = link;
+  anchor.target = "_blank";
+  anchor.rel = "noopener noreferrer";
+  anchor.textContent = "Open search results →";
+  notice.append(text, anchor);
+  notice.style.display = "block";
+});
+
+document.getElementById("plan-form").addEventListener("submit", event => {
+  event.preventDefault();
+  const fields = [
+    ["Goal", "goal"], ["Skill or gap", "skill"],
+    ["First action", "action"], ["Target date", "deadline"]
+  ];
+  const output = document.getElementById("plan-output");
+  output.replaceChildren();
+  const heading = document.createElement("h3");
+  heading.textContent = "Your draft career plan";
+  output.appendChild(heading);
+  fields.forEach(([label, id]) => {
+    const p = document.createElement("p");
+    const strong = document.createElement("strong");
+    strong.textContent = label + ": ";
+    p.append(strong, document.getElementById(id).value);
+    output.appendChild(p);
+  });
+  const copy = document.createElement("button");
+  copy.type = "button";
+  copy.className = "btn btn-outline";
+  copy.textContent = "Copy My Plan";
+  copy.addEventListener("click", async () => {
+    const text = fields.map(([label,id]) =>
+      label + ": " + document.getElementById(id).value
+    ).join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      copy.textContent = "Copied";
+    } catch {
+      copy.textContent = "Select and copy the plan text";
+    }
+  });
+  output.appendChild(copy);
+});
+
+const checkboxes = [...document.querySelectorAll("#task-list input[type=checkbox]")];
+function updateTasks() {
+  const complete = checkboxes.filter(box => box.checked).length;
+  document.getElementById("task-count").textContent =
+    complete + " of " + checkboxes.length + " actions complete";
+}
+checkboxes.forEach(box => box.addEventListener("change", updateTasks));
+
+document.getElementById("evidence").addEventListener("submit", event => {
+  event.preventDefault();
+  const fields = [
+    ["Project or task","e-title"], ["Problem or objective","e-problem"],
+    ["Work completed","e-work"], ["Result and evidence","e-result"]
+  ];
+  const output = document.getElementById("evidence-output");
+  output.replaceChildren();
+  const heading = document.createElement("h3");
+  heading.textContent = "Evidence record";
+  output.appendChild(heading);
+  fields.forEach(([label,id]) => {
+    const p = document.createElement("p");
+    const strong = document.createElement("strong");
+    strong.textContent = label + ": ";
+    p.append(strong, document.getElementById(id).value);
+    output.appendChild(p);
+  });
+  const copy = document.createElement("button");
+  copy.type = "button";
+  copy.className = "btn btn-outline";
+  copy.textContent = "Copy Evidence Record";
+  copy.addEventListener("click", async () => {
+    const text = fields.map(([label,id]) =>
+      label + ": " + document.getElementById(id).value
+    ).join("\n\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      copy.textContent = "Copied";
+    } catch {
+      copy.textContent = "Select and copy the record text";
+    }
+  });
+  output.appendChild(copy);
+});
+</script>
+</body>
+</html>
